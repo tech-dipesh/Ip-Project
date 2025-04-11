@@ -3,6 +3,7 @@ import geminiRoutes from "./geminiservice.js"
 
 
 import express from 'express';
+const app=express()
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import cors from 'cors';
@@ -12,7 +13,7 @@ import flash from 'connect-flash';
 import Joi from 'joi';
 
 
-const path=8888;
+const port=process.env.PORT || 8888;
 
 dotenv.config()
 
@@ -25,8 +26,14 @@ app.use(flash());
 main().catch(err => console.log(err));
 
 async function main() {
-  await mongoose.connect('mongodb://127.0.0.1:27017/ip');
-  // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
+  try {
+    await mongoose.connect(process.env.MONGOURL);
+    // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
+    console.log("Successfully connected ip database");
+  } catch (error) {
+    console.error("Error while connected to the database")
+    console.log("Database connection error:", error)
+  }
 }
 
 app.use("/chat", geminiRoutes);

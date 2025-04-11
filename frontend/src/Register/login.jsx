@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import {useNavigate} from "react-router-dom"
+import {loginPost} from "../gemini/api.jsx"
 
 export const Login = () => {
+  const navigate=useNavigate()
   const {
     register,
     handleSubmit,
@@ -10,9 +13,16 @@ export const Login = () => {
   } = useForm();
   const [showPassword, setShowPassword] = useState(false);
 
-  const onSubmit = (data) => {
-    console.log("Login Data:", data);
-    // Your login logic here
+  const onSubmit = async(data) => {
+    try {
+      
+      console.log("Login Data:", data);
+      const response=await loginPost(data)
+      navigate("/")
+      // Your login logic here
+    } catch (error) {
+      console.error(error.message)
+    }
   };
 
   return (

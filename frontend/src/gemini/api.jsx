@@ -25,3 +25,6 @@ await main();
 export const signup = () => API.get('/signup');
 export const login = (id) => API.get(`/tools/${id}`);
 
+export const signupPost = (data) => API.post('/register/signup', data);
+export const loginPost = (data) => API.post('/register/login', data);
+
